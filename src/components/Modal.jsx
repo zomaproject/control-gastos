@@ -8,14 +8,14 @@ function Modal({guardarGasto, setModal, animarModal, setAnimarModal }) {
 
   const [input, setInput] = React.useState({
     nombre: "",
-    cantidad: "",
-    select: "",
+    cantidad: 0,
+    categoria: "",
   });
 
   const handleChange = (e) => {
     setInput({
       ...input,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.name === 'cantidad'  ? Number(e.target.value) : e.target.value
     });
   };
 
@@ -76,7 +76,7 @@ function Modal({guardarGasto, setModal, animarModal, setAnimarModal }) {
           <label htmlFor="categoria">Categoria</label>
           <select
             value={input.select}
-            name="select"
+            name="categoria"
             onChange={handleChange}
             id="categoria"
           >
