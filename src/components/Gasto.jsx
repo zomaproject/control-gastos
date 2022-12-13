@@ -3,14 +3,19 @@ import ahorro from '../img/icono_ahorro.svg';
 import casa from '../img/icono_casa.svg';
 import salud from '../img/icono_salud.svg';
 import ocio from '../img/icono_ocio.svg';
-import comida from '../img/icono_comida.svg'
+import comida from '../img/icono_comida.svg';
 import gastos from '../img/nuevo-gasto.svg';
 import suscripciones from '../img/icono_suscripciones.svg';
 
+import {
+  LeadingActions,
+  SwipeableList,
+  SwipeableListItem,
+  SwipeAction,
+  TrailingActions,
+} from 'react-swipeable-list';
 
-import { LeadingActions, SwipeableList, SwipeableListItem, SwipeAction, TrailingActions, } from 'react-swipeable-list'
-
-import 'react-swipeable-list/dist/styles.css'
+import 'react-swipeable-list/dist/styles.css';
 const diccionarioIconos = {
   ahorro,
   casa,
@@ -18,39 +23,35 @@ const diccionarioIconos = {
   ocio,
   comida,
   gastos,
-  suscripciones
+  suscripciones,
 };
 
-
-
-
-const Gasto = ({ gasto, setEditar }) => {
-  const { categoria, nombre, cantidad, fecha,id } = gasto
+const Gasto = ({ eliminarGasto, gasto, setEditar }) => {
+  const { categoria, nombre, cantidad, fecha, id } = gasto;
   const leadingActions = () => (
-
     <LeadingActions>
-      <SwipeAction onClick={() => setEditar(gasto)}>
+      <SwipeAction destructive={true} onClick={() => setEditar(gasto)}>
         Editar
       </SwipeAction>
     </LeadingActions>
-  )
+  );
 
-    const trailingActions = () => (
-        <TrailingActions>
-            <SwipeAction 
-                onClick={() => console.log('oh')}
-                // destructive={true}
-                // console.log('hola')
-            >
-                Eliminar
-            </SwipeAction>
-        </TrailingActions>
-    )
+  const trailingActions = () => (
+    <TrailingActions>
+      <SwipeAction
+        onClick={() => eliminarGasto(id)}
+        // destructive={true}
+        // console.log('hola')
+      >
+        Eliminar
+      </SwipeAction>
+    </TrailingActions>
+  );
   return (
     <SwipeableList>
       <SwipeableListItem
         leadingActions={leadingActions()}
-        trailingActions = {trailingActions()}
+        trailingActions={trailingActions()}
       >
         <div className='gasto sombra'>
           <div className='contenido-gasto'>

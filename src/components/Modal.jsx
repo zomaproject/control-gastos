@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 
-function Modal({ editar, guardarGasto, setModal, animarModal, setAnimarModal }) {
+function Modal({setEditar, editar, guardarGasto, setModal, animarModal, setAnimarModal }) {
   const [mensaje, setMensaje] = useState("");
 
   const [input, setInput] = React.useState({
@@ -35,6 +35,7 @@ function Modal({ editar, guardarGasto, setModal, animarModal, setAnimarModal }) 
   const ocultarModal = (e) => {
     e.preventDefault();
     setAnimarModal(false);
+    setEditar({})
     setTimeout(() => {
       setModal(false);
     }, 500);
