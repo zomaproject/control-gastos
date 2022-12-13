@@ -2,8 +2,10 @@ import React from "react";
 import CerraBtn from "../img/cerrar.svg";
 import Mensaje from "./Mensaje";
 import { useState } from "react";
+import { useEffect } from "react";
 
-function Modal({guardarGasto, setModal, animarModal, setAnimarModal }) {
+
+function Modal({ editar, guardarGasto, setModal, animarModal, setAnimarModal }) {
   const [mensaje, setMensaje] = useState("");
 
   const [input, setInput] = React.useState({
@@ -11,11 +13,22 @@ function Modal({guardarGasto, setModal, animarModal, setAnimarModal }) {
     cantidad: 0,
     categoria: "",
   });
+  const [id, setId] = useState('')
+  const [fecha, setFecha] = useState('')
+
+  useEffect(() => {
+    console.log(editar)
+    if (Object.keys(editar).length) {
+      setInput(editar)
+      setId(editar.id)
+      setFecha(editar.fecha)
+    }
+  }, [])
 
   const handleChange = (e) => {
     setInput({
       ...input,
-      [e.target.name]: e.target.name === 'cantidad'  ? Number(e.target.value) : e.target.value
+      [e.target.name]: e.target.name === 'cantidad' ? Number(e.target.value) : e.target.value
     });
   };
 
@@ -29,25 +42,25 @@ function Modal({guardarGasto, setModal, animarModal, setAnimarModal }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(Object.values(input).includes('')){
+    if (Object.values(input).includes('')) {
       setMensaje('Todos los campos son obligatorios')
       setTimeout(() => {
         setMensaje('')
-      }, 3000);
+      }, 500);
       return
     }
-    guardarGasto(input)
+    guardarGasto({ ...input, fecha, id })
   };
   return (
     <div className="modal">
       <div className="cerrar-modal">
         <img src={CerraBtn} alt="cerrar" onClick={ocultarModal} />
       </div>
-      <form 
-      onSubmit={handleSubmit}
-      className={`formulario ${animarModal ? "animar" : "cerrar"}`}>
-        <legend>Nuevo Gasto</legend>
-        {mensaje && <Mensaje tipo='error'>{mensaje}</Mensaje> }
+      <form
+        onSubmit={handleSubmit}
+        className={`formulario ${animarModal ? "animar" : "cerrar"}`}>
+        <legend>{editar.nombre ? 'Editar' : 'Nuevo Gasto'}</legend>
+        {mensaje && <Mensaje tipo='error'>{mensaje}</Mensaje>}
         <div className="campo">
           <label htmlFor="nombre">Nombre Gasto</label>
           <input
@@ -75,7 +88,7 @@ function Modal({guardarGasto, setModal, animarModal, setAnimarModal }) {
         <div className="campo">
           <label htmlFor="categoria">Categoria</label>
           <select
-            value={input.select}
+            value={input.categoria}
             name="categoria"
             onChange={handleChange}
             id="categoria"
@@ -89,7 +102,7 @@ function Modal({guardarGasto, setModal, animarModal, setAnimarModal }) {
             <option value="suscripciones">Suscripciones</option>
           </select>
         </div>
-        <input type="submit" value="Añadir Gastos" />
+        <input type="submit" value={editar.nombre ? 'Editar' : "Añadir Gastos"} />
       </form>
     </div>
   );
